@@ -26,3 +26,89 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+/*---------------------------*/
+
+.button {
+  width: 80px;
+  background: red;
+  color: yellow;
+
+  border: 2px solid red;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+.score {
+  text-align: center;
+  color: yellow;
+  background-color: black;
+  width: 200px;
+  display: flex;
+  justify-content: space-around;
+  border: 2px solid red;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+
+.score-value {
+  color: white;
+  text-shadow: 2px 1px 2px red;
+}
+
+
+.header {
+  display: flex;
+  justify-content: space-around;
+  font-size: 24px;
+  padding: 5px;
+}
+.footer {
+  display: flex;
+  justify-content: space-around;
+  font-size: 24px;
+  padding: 5px;
+}
+.rectangle {
+  border: 2px solid red;
+  border-radius: 5px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+
+.circle {
+
+}
+
+.group{
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  align-items: center;
+}
+
+.group .button {
+  height: 100%;
+  margin: 0 5px;
+}
+.group .score {
+  height: 100%;
+  margin: 0 5px;
+}
+
+.half-round-score {
+  border-radius: 5px 5px 20px 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #6eb858;
+}
+.half-round-score-name {
+  background-color: #aab955;
+  padding: 5px;
+}
+
