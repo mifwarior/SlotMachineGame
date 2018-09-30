@@ -5,6 +5,10 @@ import './App.css';
 import RectangleButton from './components/RectangleButton';
 import ScoreField from './components/ScoreField';
 import HalfRoundScore from './components/HalfRoundScore';
+import OvalElement from './components/OvalElement';
+import AutoSpinToggle from './components/AutoSpinToggle';
+import SpinButton from './components/SpinButton';
+import AtomButton from './components/AtomButton';
 
 
 class App extends Component {
@@ -29,10 +33,14 @@ class App extends Component {
 
         <div className="footer">
           <HalfRoundScore name="TOTAL BET" value={25}/>
-          <div>Lines</div>
-          <div><span>{"<"}</span>Bet<span>{">"}</span></div>
-          <div>Auto spin</div>
-          <div>Spin</div>
+          <OvalElement name="Lines" value={25}/>
+          <div className="group">
+            <AtomButton name="<"/>
+            <OvalElement name="Bet" value={1}/>
+            <AtomButton name=">"/>
+          </div>
+          <AutoSpinToggle name="Auto spin" toggle={false}/>
+          <SpinButton name="Spin"/>
         </div>
       </div>
     );
