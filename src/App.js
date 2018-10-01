@@ -2,46 +2,39 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 
 import './App.css';
-import RectangleButton from './components/RectangleButton';
-import ScoreField from './components/ScoreField';
 import HalfRoundScore from './components/HalfRoundScore';
 import OvalElement from './components/OvalElement';
 import AutoSpinToggle from './components/AutoSpinToggle';
-import SpinButton from './components/SpinButton';
+import SpinButton from './containers/SpinButton';
 import AtomButton from './components/AtomButton';
+import Background from './components/Background';
+import CanvasContainer from './containers/CanvasContainer';
+import Header from './containers/Header';
 
 
 class App extends Component {
   render() {
-
     return (
-      <div>
-        <div className="header">
-          <RectangleButton onClick={console.log}>PAY TABLE</RectangleButton>
+      <div className="content">
+        <Background/>
+        <Header/>
 
-          <div className="group">
-            <ScoreField name="WIN" value={0}/>
-            <ScoreField name="COIN" value="10,000"/>
-          </div>
-
-          <div className="group">
-            <RectangleButton onClick={console.log}>Home</RectangleButton>
-            <RectangleButton onClick={console.log}>Settings</RectangleButton>
-          </div>
-        </div>
-        <div></div>
+        <CanvasContainer/>
 
         <div className="footer">
-          <HalfRoundScore name="TOTAL BET" value={25}/>
-          <OvalElement name="Lines" value={25}/>
-          <div className="group">
-            <AtomButton name="<"/>
-            <OvalElement name="Bet" value={1}/>
-            <AtomButton name=">"/>
+          <div className="menu">
+            <HalfRoundScore name="TOTAL BET" value={25}/>
+            <OvalElement name="Lines" value={25}/>
+            <div className="group">
+              <AtomButton name="<"/>
+              <OvalElement name="Bet" value={1}/>
+              <AtomButton name=">"/>
+            </div>
+            <AutoSpinToggle name="Auto spin" toggle={false}/>
+            <SpinButton name="Spin"/>
           </div>
-          <AutoSpinToggle name="Auto spin" toggle={false}/>
-          <SpinButton name="Spin"/>
         </div>
+
       </div>
     );
     return (
