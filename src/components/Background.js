@@ -1,8 +1,8 @@
 import React from 'react';
 
 const createRound = ({key, radius}) => {
-  const width = (Math.random() * key * 10)|0;
-  const height = (Math.random() * key * 10)|0;
+  const width = (Math.random() *  100)|0;
+  const height = (Math.random() * 100)|0;
 
   const r = Math.random()*256;
   const g = Math.random()*256;
