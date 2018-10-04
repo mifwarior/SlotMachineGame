@@ -1,7 +1,7 @@
-import THREE from 'Three';
+import * as THREE from 'three';
 import React from 'react';
 
-class ThreeJSRenderer extends React.Component {
+export default class ThreeJSRenderer extends React.Component {
   constructor(...args){
     super(...args);
 
@@ -34,16 +34,19 @@ class ThreeJSRenderer extends React.Component {
     this.draw = this.draw.bind(this);
     // ---------------
 
+    this.canvasRef = React.createRef();
+
   }
   initRender(){
-    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    let canvas = this.canvasRef.current;
+    this.renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvas });
     this.renderer.setPixelRatio( window.devicePixelRatio );
-    this.renderer.setSize( window.innerWidth, window.innerHeight );
+    this.renderer.setSize( canvas.innerWidth, canvas.innerHeight );
     this.renderer.setClearColor( 0x000000, 1 );
   }
 
   draw(time) {
-    this.animationFrameId = requestAnimationFrame(this.draw);
+    //this.animationFrameId = requestAnimationFrame(this.draw);
 
     let dt = (time-this.lastTime)*0.0001;
     this.lastTime = time;
@@ -53,13 +56,27 @@ class ThreeJSRenderer extends React.Component {
     }
   
     this.renderer.render(this.scene, this.camera);
+    console.log("draw " + time);
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log("componentWillReceiveProps", nextProps);
+  }
+
+  render(){
+    console.log("render");
+    return (<canvas className="canvas" ref={this.canvasRef}></canvas>)
+  }
 
   shouldComponentUpdate() {
     return false;
   }
   
+  componentDidMount(){
+    console.log("componentDidMount");
+    this.initRender();
+    this.draw(0);
+  }
   componentWillUnmount() {
     if(this.animationFrameId == -1) {
       cancelAnimationFrame(this.animationFrameId);
