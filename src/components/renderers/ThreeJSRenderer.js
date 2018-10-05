@@ -29,7 +29,7 @@ export default class ThreeJSRenderer extends React.Component {
     this.meshMaterial = new THREE.MeshPhongMaterial( { color: 0x156289, emissive: 0x072534, side: THREE.DoubleSide, flatShading: true } );
     this.lineMaterial = new THREE.LineBasicMaterial( { color: 0xffffff, transparent: true, opacity: 0.5 } );
 
-    this.geometry = new THREE.CylinderGeometry( 5, 5, 5, 20 );
+    this.geometry = new THREE.CylinderGeometry( 10, 10, 5, 20 );
     this.lines = new THREE.LineSegments( this.geometry, this.lineMaterial );
 
     this.cylinder = new THREE.Mesh( this.geometry, this.material );
@@ -48,14 +48,24 @@ export default class ThreeJSRenderer extends React.Component {
 
   }
   initRender(){
-    let canvas = this.canvasRef.current;
+    const canvas = this.canvasRef.current;
     this.renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvas });
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setSize( canvas.clientWidth, canvas.clientHeight );
     this.renderer.setClearColor( 0x000000, 1 );
     this.camera = new THREE.PerspectiveCamera( 75, canvas.clientWidth / canvas.clientHeight, 0.1, 50 );
-    this.camera.position.z = 10;
+    this.camera.position.z = 15;
     this.camera.updateProjectionMatrix();
+
+    window.addEventListener( 'resize', () => {
+
+      const canvas = this.canvasRef.current;
+      const parent = canvas.parentElement;
+
+      this.camera.aspect = parent.clientWidth / parent.clientHeight;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize( parent.clientWidth, parent.clientHeight );
+    }, false );
   }
 
   draw(time) {
@@ -64,8 +74,9 @@ export default class ThreeJSRenderer extends React.Component {
     let dt = (time-this.lastTime)*0.0001;
     this.lastTime = time;
 
+    const speed = 1;
     if(this.group) {
-      //this.group.rotation.x += dt
+      this.group.rotation.x += dt * speed;
     }
   
     this.renderer.render(this.scene, this.camera);
@@ -94,6 +105,7 @@ export default class ThreeJSRenderer extends React.Component {
       cancelAnimationFrame(this.animationFrameId);
       this.animationFrameId = -1;
     }
+    window.removeEventListener("resize");
   }
 
 }
