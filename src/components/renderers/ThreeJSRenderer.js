@@ -5,6 +5,8 @@ export default class ThreeJSRenderer extends React.Component {
   constructor(...args){
     super(...args);
 
+    this.cylindetSegments = 20;
+    this.angle = 2 * Math.PI / this.cylindetSegments;
     // ---------- for threejs
     this.lastTime = 0;
     this.animationFrameId = -1;
@@ -29,10 +31,10 @@ export default class ThreeJSRenderer extends React.Component {
     this.meshMaterial = new THREE.MeshPhongMaterial( { color: 0x156289, emissive: 0x072534, side: THREE.DoubleSide, flatShading: true } );
     this.lineMaterial = new THREE.LineBasicMaterial( { color: 0xffffff, transparent: true, opacity: 0.5 } );
 
-    this.geometry = new THREE.CylinderGeometry( 10, 10, 5, 20 );
+    this.geometry = new THREE.CylinderGeometry( 10, 10, 5, this.cylindetSegments );
     this.groups = [];
 
-    for(let i = 0; i < 3; i++){
+    for(let i = 0; i < 1; i++){
       const lines = new THREE.LineSegments( this.geometry, this.lineMaterial );
       const cylinder = new THREE.Mesh( this.geometry, this.material );
       cylinder.rotation.z = Math.PI * 0.5;
@@ -52,8 +54,6 @@ export default class ThreeJSRenderer extends React.Component {
     this.canvasRef = React.createRef();
 
   }
-
-  
 
   initRender(){
     const canvas = this.canvasRef.current;
@@ -77,27 +77,33 @@ export default class ThreeJSRenderer extends React.Component {
   }
 
   draw(time) {
+    const {onTick} = this.props; 
     this.animationFrameId = requestAnimationFrame(this.draw);
 
     let dt = (time-this.lastTime)*0.0001;
     this.lastTime = time;
 
-    const speed = 1;
+    const speed = 90;
     
     for(let i = 0; i < this.groups.length; i++)
     {
-      this.groups[i].rotation.x += dt * speed * (i+1);
+      const dRot = dt * this.angle * speed * (i+1);
+
+      let ticksBefore = (this.groups[i].rotation.x / this.angle)|0;
+      this.groups[i].rotation.x += dRot;
+      let ticksAfter = (this.groups[i].rotation.x / this.angle)|0;
+
+      if(ticksBefore < ticksAfter) {
+        if(onTick) {
+          onTick();
+        }
+      }
     }
   
     this.renderer.render(this.scene, this.camera);
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log("componentWillReceiveProps", nextProps);
-  }
-
   render(){
-    console.log("render");
     return (<canvas className="canvas" ref={this.canvasRef}></canvas>)
   }
 
@@ -106,7 +112,6 @@ export default class ThreeJSRenderer extends React.Component {
   }
   
   componentDidMount(){
-    console.log("componentDidMount");
     this.initRender();
     this.draw(0);
   }
