@@ -86,7 +86,7 @@ export default class ThreeJSRenderer extends React.Component {
     
     for(let i = 0; i < this.groups.length; i++)
     {
-      this.groups[i].rotation.x += dt * speed * i;
+      this.groups[i].rotation.x += dt * speed * (i+1);
     }
   
     this.renderer.render(this.scene, this.camera);
