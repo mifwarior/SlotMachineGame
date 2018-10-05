@@ -27,9 +27,19 @@ export default class ThreeJSRenderer extends React.Component {
     this.scene.add( lights[ 2 ] );
 
     this.meshMaterial = new THREE.MeshPhongMaterial( { color: 0x156289, emissive: 0x072534, side: THREE.DoubleSide, flatShading: true } );
-    this.geometry = new THREE.CylinderGeometry( 5, 5, 20, 32 );
+    this.lineMaterial = new THREE.LineBasicMaterial( { color: 0xffffff, transparent: true, opacity: 0.5 } );
+
+    this.geometry = new THREE.CylinderGeometry( 5, 5, 5, 20 );
+    this.lines = new THREE.LineSegments( this.geometry, this.lineMaterial );
+
     this.cylinder = new THREE.Mesh( this.geometry, this.material );
-    this.scene.add( this.cylinder );
+    this.cylinder.rotation.z = Math.PI * 0.5;
+    this.lines.rotation.z = Math.PI * 0.5;
+    this.group = new THREE.Group();
+    this.group.add(this.cylinder);
+    this.group.add(this.lines);
+    
+    this.scene.add(this.group );
 
     this.draw = this.draw.bind(this);
     // ---------------
@@ -41,22 +51,24 @@ export default class ThreeJSRenderer extends React.Component {
     let canvas = this.canvasRef.current;
     this.renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvas });
     this.renderer.setPixelRatio( window.devicePixelRatio );
-    this.renderer.setSize( canvas.innerWidth, canvas.innerHeight );
+    this.renderer.setSize( canvas.clientWidth, canvas.clientHeight );
     this.renderer.setClearColor( 0x000000, 1 );
+    this.camera = new THREE.PerspectiveCamera( 75, canvas.clientWidth / canvas.clientHeight, 0.1, 50 );
+    this.camera.position.z = 10;
+    this.camera.updateProjectionMatrix();
   }
 
   draw(time) {
-    //this.animationFrameId = requestAnimationFrame(this.draw);
+    this.animationFrameId = requestAnimationFrame(this.draw);
 
     let dt = (time-this.lastTime)*0.0001;
     this.lastTime = time;
 
-    if(this.cylinder) {
-      this.cylinder.rotation.x += dt
+    if(this.group) {
+      //this.group.rotation.x += dt
     }
   
     this.renderer.render(this.scene, this.camera);
-    console.log("draw " + time);
   }
 
   componentWillReceiveProps(nextProps) {
