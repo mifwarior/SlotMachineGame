@@ -30,16 +30,21 @@ export default class ThreeJSRenderer extends React.Component {
     this.lineMaterial = new THREE.LineBasicMaterial( { color: 0xffffff, transparent: true, opacity: 0.5 } );
 
     this.geometry = new THREE.CylinderGeometry( 10, 10, 5, 20 );
-    this.lines = new THREE.LineSegments( this.geometry, this.lineMaterial );
+    this.groups = [];
 
-    this.cylinder = new THREE.Mesh( this.geometry, this.material );
-    this.cylinder.rotation.z = Math.PI * 0.5;
-    this.lines.rotation.z = Math.PI * 0.5;
-    this.group = new THREE.Group();
-    this.group.add(this.cylinder);
-    this.group.add(this.lines);
-    
-    this.scene.add(this.group );
+    for(let i = 0; i < 3; i++){
+      const lines = new THREE.LineSegments( this.geometry, this.lineMaterial );
+      const cylinder = new THREE.Mesh( this.geometry, this.material );
+      cylinder.rotation.z = Math.PI * 0.5;
+      lines.rotation.z = Math.PI * 0.5;
+      
+      const group = new THREE.Group();
+      group.position.x = -6 + 6 *i;
+      group.add(cylinder);
+      group.add(lines);
+      this.groups.push(group);
+      this.scene.add(group);
+    }
 
     this.draw = this.draw.bind(this);
     // ---------------
@@ -47,14 +52,17 @@ export default class ThreeJSRenderer extends React.Component {
     this.canvasRef = React.createRef();
 
   }
+
+  
+
   initRender(){
     const canvas = this.canvasRef.current;
     this.renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvas });
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setSize( canvas.clientWidth, canvas.clientHeight );
     this.renderer.setClearColor( 0x000000, 1 );
-    this.camera = new THREE.PerspectiveCamera( 75, canvas.clientWidth / canvas.clientHeight, 0.1, 50 );
-    this.camera.position.z = 15;
+    this.camera = new THREE.PerspectiveCamera( 45, canvas.clientWidth / canvas.clientHeight, 0.1, 50 );
+    this.camera.position.z = 30;
     this.camera.updateProjectionMatrix();
 
     window.addEventListener( 'resize', () => {
@@ -75,8 +83,10 @@ export default class ThreeJSRenderer extends React.Component {
     this.lastTime = time;
 
     const speed = 1;
-    if(this.group) {
-      this.group.rotation.x += dt * speed;
+    
+    for(let i = 0; i < this.groups.length; i++)
+    {
+      this.groups[i].rotation.x += dt * speed * i;
     }
   
     this.renderer.render(this.scene, this.camera);
