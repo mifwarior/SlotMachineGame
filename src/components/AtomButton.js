@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 
 const AtomButton = ({name, onClick})=>{
   return (
-    <span className="button-atom">
+    <span className="button-atom" onClick={onClick}>
       {name}
     </span>
   );

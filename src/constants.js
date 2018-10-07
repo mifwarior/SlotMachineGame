@@ -5,7 +5,7 @@ const Constants = {
   TOGGLE_AUTO_SPIN:"TOGGLE_AUTO_SPIN",
   SPIN:"SPIN",
   HOME:"HOME",
-  SETTINGS:"SETTINGS"
+  SETTINGS:"SETTINGS",
 }
 
 export default Constants;

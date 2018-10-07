@@ -161,14 +161,14 @@ export default class ThreeJSRenderer extends React.Component {
         }
       }
     }
-    
+
     if (this.completeAnimate !== complete && complete === this.groups.length) {
       this.completeAnimate = complete;
       if (onComplete) {
         onComplete();
       }
     }
- 
+
     this.renderer.render(this.scene, this.camera);
   }
 
@@ -180,7 +180,7 @@ export default class ThreeJSRenderer extends React.Component {
     this.completeAnimate = 0;
     const { result } = nextProps;
 
-    console.log("Result:",  result)
+    console.log("Result:", result)
     for (let i = 0; i < this.groups.length; i++) {
       const randRounds = 2 * Math.PI * (1 + (Math.random() * 4) | 0);
 
