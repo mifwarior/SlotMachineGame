@@ -51,6 +51,8 @@
   align-items: center;
   cursor: pointer;
   justify-content: center;
+  background-image: linear-gradient(red, yellow);
+  box-shadow: 5px 5px 10px black;
 }
 .score {
   text-align: center;
@@ -64,6 +66,7 @@
   text-align: center;
   display: flex;
   align-items: center;
+  box-shadow: 5px 5px 10px black;
 }
 
 .score-value {
@@ -135,6 +138,7 @@
   align-items: center;
   background-color: #6eb858;
   height: 80px;
+  box-shadow: 5px 5px 10px black;
 }
 .half-round-score-name {
   background-color: #aab955;
@@ -151,6 +155,7 @@
   height: 80px;
   background-color: red;
   overflow: hidden;
+  box-shadow: 5px 5px 10px black;
 }
 .oval-element-name {
   width: 100%;
@@ -177,6 +182,7 @@
   color: brown;
   background-color: yellow;
   cursor: pointer;
+  box-shadow: 5px 5px 10px black;
 }
 .autospin-toggle-active {
   background-color: #6eb858;
@@ -189,10 +195,12 @@
   align-items: center;
   text-align: center;
   height: 80px;
-  background: green;
+  background: linear-gradient(yellow, green);
+  color: white;
   width: 90px;
   border-radius: 30px;
   cursor: pointer;
+  box-shadow: 5px 5px 10px black;
 }
 
 .background {
@@ -236,4 +244,30 @@
 .html-renderer span {
   font-size: 72px;
   padding: 0 20px;
+}
+
+.game-over-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(100,0,0,0.8);
+  text-shadow: 2px 2px 2px black;
+}
+
+.game-over-header {
+  color: white;
+  font-size: 42px;
+}
+
+.game-over-score {
+  color: cornflowerblue;
+  font-size: 18px;
+}
+
+.game-over-score span {
+  color: white;
 }

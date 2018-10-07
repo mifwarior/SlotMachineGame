@@ -10,7 +10,15 @@ function AddScoreReducer(state = 0, action) {
   return state;
 }
 
-function AddCoinsReducer(state = 10000, action) {
+function AddTotalBetReducer(state = 0, action) {
+  if (action.type === constants.ADD_TOTAL_BET) {
+    const { count } = action.payload;
+    return state + count;
+  }
+  return state;
+}
+
+function AddCoinsReducer(state = 100, action) {
   if (action.type === constants.ADD_COINS) {
 
     const { count } = action.payload;
@@ -64,6 +72,13 @@ function HomeReducer(state = false, action) {
   return state;
 }
 
+function GameOverReducer(state = false, action){
+  if (action.type === constants.GAME_OVER) {
+    return true;
+  }
+  return state;
+}
+
 export default combineReducers({
   score: AddScoreReducer,
   coins: AddCoinsReducer,
@@ -71,5 +86,7 @@ export default combineReducers({
   autoSpin: ToggleAutoSpinReducer,
   spin: SpinReducer,
   settings: SettingsReducer,
-  home: HomeReducer
+  home: HomeReducer,
+  totalBet: AddTotalBetReducer,
+  gameOver: GameOverReducer
 });

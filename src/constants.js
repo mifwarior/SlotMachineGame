@@ -6,6 +6,8 @@ const Constants = {
   SPIN:"SPIN",
   HOME:"HOME",
   SETTINGS:"SETTINGS",
+  ADD_TOTAL_BET: "ADD_TOTAL_BET",
+  GAME_OVER: "GAME_OVER"
 }
 
 export default Constants;

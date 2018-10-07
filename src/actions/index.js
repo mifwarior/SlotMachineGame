@@ -28,6 +28,15 @@ export function AddBet(count) {
   }
 }
 
+export function AddTotalBet(count) {
+  return {
+    type: constants.ADD_TOTAL_BET,
+    payload: {
+      count
+    }
+  }
+}
+
 export function ToggleAutoSpin() {
   return {
     type: constants.TOGGLE_AUTO_SPIN
@@ -36,13 +45,24 @@ export function ToggleAutoSpin() {
 
 export function Spin() {
   return function (dispatch, getState) {
-    const {bet} = getState();
-    dispatch(AddCoins(-bet));
-    dispatch({
-      type: constants.SPIN
-    });
+    const { bet, coins } = getState();
+    if (coins >= bet) {
+      dispatch(AddTotalBet(bet));
+      dispatch(AddCoins(-bet));
+      dispatch({
+        type: constants.SPIN
+      });
+    } else {
+      dispatch({type:null});
+    }
   }
 
+}
+
+export function GameOver() {
+  return {
+    type: constants.GAME_OVER
+  }
 }
 
 export function Home(active) {
@@ -67,7 +87,7 @@ export function Settings(active) {
 export function CalcTurn() {
   return function (dispatch, getState) {
 
-    const { spin, bet } = getState();
+    const { spin, bet, coins, autoSpin } = getState();
     const { result, drums } = spin;
 
     setTimeout(function () {
@@ -80,10 +100,16 @@ export function CalcTurn() {
         }
 
         if (win) {
-          const coins = (result[0] + 1 ) * bet;
+          const winCoins = (result[0] + 1) * bet;
           AduioManager.audioMoney.play();
-          dispatch(AddCoins(coins));
-          dispatch(AddScore(coins));
+          dispatch(AddCoins(winCoins));
+          dispatch(AddScore(winCoins));
+        } 
+
+        if (coins <= 0) {
+          dispatch(GameOver());
+        } else if(autoSpin) {
+          dispatch(Spin());
         }
       }
     }, 500);

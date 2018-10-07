@@ -8,12 +8,12 @@ import HalfRoundScore from '../components/HalfRoundScore';
 import propTypes from 'prop-types'
 import OvalElement from '../components/OvalElement';
 
-const Footer = ({ bet, autoSpin, onAddBet, onToggleAutoSpin, onSpin, spin }) => {
+const Footer = ({ bet, autoSpin, onAddBet, onToggleAutoSpin, onSpin, spin, totalBet }) => {
 
   return (
     <div className="footer">
       <div className="menu">
-        <HalfRoundScore name="TOTAL BET" value={bet} />
+        <HalfRoundScore name="TOTAL BET" value={totalBet} />
         <OvalElement name="Lines" value={spin.symbols} />
         <div className="group">
           <AtomButton name="<" onClick={() => { onAddBet(-1) }} />
@@ -31,7 +31,8 @@ Footer.propTypes = {
   bet: propTypes.number.isRequired,
   autoSpin: propTypes.bool.isRequired,
   onAddBet: propTypes.func.isRequired,
-  onToggleAutoSpin: propTypes.func.isRequired
+  onToggleAutoSpin: propTypes.func.isRequired,
+  totalBet: propTypes.number.isRequired
 }
 
 export default connect((state, props) => {
