@@ -28,20 +28,25 @@ export default class ThreeJSRenderer extends React.Component {
     this.scene.add( lights[ 1 ] );
     this.scene.add( lights[ 2 ] );
 
-    this.meshMaterial = new THREE.MeshPhongMaterial( { color: 0x156289, emissive: 0x072534, side: THREE.DoubleSide, flatShading: true } );
+    this.textures = this.loadTextures();
+
+    this.meshMaterial = this.createMeshMaterial(this.textures);
     this.lineMaterial = new THREE.LineBasicMaterial( { color: 0xffffff, transparent: true, opacity: 0.5 } );
 
-    this.geometry = new THREE.CylinderGeometry( 10, 10, 5, this.cylindetSegments );
+    this.geometry = new THREE.CylinderGeometry( 10, 10, 5, this.cylindetSegments, 1, false );
+
+    this.randomizeFaces(this.geometry, this.textures.length);
+
     this.groups = [];
 
-    for(let i = 0; i < 1; i++){
+    for(let i = 0; i < 3; i++){
       const lines = new THREE.LineSegments( this.geometry, this.lineMaterial );
-      const cylinder = new THREE.Mesh( this.geometry, this.material );
+      const cylinder = new THREE.Mesh( this.geometry, this.meshMaterial );
       cylinder.rotation.z = Math.PI * 0.5;
       lines.rotation.z = Math.PI * 0.5;
       
       const group = new THREE.Group();
-      group.position.x = -6 + 6 *i;
+      group.position.x = -5.2 + 5.2 *i;
       group.add(cylinder);
       group.add(lines);
       this.groups.push(group);
@@ -74,6 +79,45 @@ export default class ThreeJSRenderer extends React.Component {
       this.camera.updateProjectionMatrix();
       this.renderer.setSize( parent.clientWidth, parent.clientHeight );
     }, false );
+
+  }
+
+  randomizeFaces(geometry, materialCount) {
+    for(let i =0; i < geometry.faces.length; i +=2 ){
+      const materialIndex = (Math.random() * materialCount)|0;
+      geometry.faces[i].materialIndex = materialIndex;
+      geometry.faces[i+1].materialIndex = materialIndex;
+    }
+  }
+
+  createMeshMaterial(textures){
+
+    const materials = [];
+    for(let i =0; i < textures.length; i++ ){
+      const texture = textures[i];
+      materials.push(new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, flatShading: true } ));
+    }
+    return new THREE.MeshFaceMaterial(materials);
+  }
+
+  loadTextures() {
+    const textures = [
+      this.loadTexture("assets/symbolA.png"),
+      this.loadTexture("assets/symbolB.png"),
+      this.loadTexture("assets/symbolC.png"),
+      this.loadTexture("assets/symbolD.png"),
+      this.loadTexture("assets/symbolE.png"),
+    ];
+    return textures;
+  }
+
+  loadTexture(url) {
+    var texture = new THREE.TextureLoader().load( url );
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set( 0.2, 20 );
+    texture.rotation = -Math.PI / 2;
+    return texture;
   }
 
   draw(time) {
@@ -83,11 +127,11 @@ export default class ThreeJSRenderer extends React.Component {
     let dt = (time-this.lastTime)*0.0001;
     this.lastTime = time;
 
-    const speed = 90;
+    const speed = 10;
     
     for(let i = 0; i < this.groups.length; i++)
     {
-      const dRot = dt * this.angle * speed * (i+1);
+      const dRot = dt * this.angle * speed ;//* (i+1);
 
       let ticksBefore = (this.groups[i].rotation.x / this.angle)|0;
       this.groups[i].rotation.x += dRot;
@@ -95,7 +139,7 @@ export default class ThreeJSRenderer extends React.Component {
 
       if(ticksBefore < ticksAfter) {
         if(onTick) {
-          onTick();
+          //onTick();
         }
       }
     }
