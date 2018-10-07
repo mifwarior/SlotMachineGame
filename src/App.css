@@ -40,7 +40,7 @@
 }
 
 .button {
-  width: 80px;
+  width: 100px;
   background: red;
   color: yellow;
 
@@ -50,6 +50,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  justify-content: center;
 }
 .score {
   text-align: center;
@@ -133,7 +134,7 @@
   flex-direction: column;
   align-items: center;
   background-color: #6eb858;
-  height: 70px;
+  height: 80px;
 }
 .half-round-score-name {
   background-color: #aab955;
@@ -147,7 +148,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 70px;
+  height: 80px;
   background-color: red;
   overflow: hidden;
 }
@@ -165,8 +166,8 @@
 }
 
 .autospin-toggle {
-  height: 70px;
-  width: 70px;
+  height: 80px;
+  width: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -187,9 +188,9 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: 70px;
+  height: 80px;
   background: green;
-  width: 75px;
+  width: 90px;
   border-radius: 30px;
   cursor: pointer;
 }

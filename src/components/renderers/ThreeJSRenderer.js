@@ -22,8 +22,9 @@ export default class ThreeJSRenderer extends React.Component {
     lights[1] = new THREE.PointLight(0xffffff, 1, 0);
     lights[2] = new THREE.PointLight(0xffffff, 1, 0);
 
-    lights[0].position.set(0, 200, 0);
-    lights[1].position.set(100, -100, 100);
+    lights[0].position.set(0, 0, 100); // front
+
+    lights[1].position.set(0, 200, 100);
     lights[2].position.set(- 100, - 200, - 100);
 
     this.scene.add(lights[0]);
@@ -42,7 +43,7 @@ export default class ThreeJSRenderer extends React.Component {
       const lines = new THREE.LineSegments(geometry, this.lineMaterial);
       const cylinder = new THREE.Mesh(geometry, this.meshMaterial);
       cylinder.rotation.z = Math.PI * 0.5;
-
+      lines.rotation.x = cylinder.rotation.x = this.angle * 0.5;
       lines.rotation.z = Math.PI * 0.5;
 
       const group = new THREE.Group();
@@ -101,7 +102,7 @@ export default class ThreeJSRenderer extends React.Component {
     const materials = [];
     for (let i = 0; i < textures.length; i++) {
       const texture = textures[i];
-      materials.push(new THREE.MeshPhongMaterial({ map: texture, side: THREE.DoubleSide, flatShading: true }));
+      materials.push(new THREE.MeshPhongMaterial({ map: texture, color:0x156289, emissive:0x000000, side: THREE.DoubleSide, flatShading: true }));
     }
     return new THREE.MeshFaceMaterial(materials);
   }

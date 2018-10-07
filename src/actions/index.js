@@ -36,7 +36,8 @@ export function ToggleAutoSpin() {
 
 export function Spin() {
   return function (dispatch, getState) {
-    dispatch(AddCoins(-100));
+    const {bet} = getState();
+    dispatch(AddCoins(-bet));
     dispatch({
       type: constants.SPIN
     });
@@ -66,7 +67,7 @@ export function Settings(active) {
 export function CalcTurn() {
   return function (dispatch, getState) {
 
-    const { spin } = getState();
+    const { spin, bet } = getState();
     const { result, drums } = spin;
 
     setTimeout(function () {
@@ -79,7 +80,7 @@ export function CalcTurn() {
         }
 
         if (win) {
-          const coins = result[0] * 1000;
+          const coins = (result[0] + 1 ) * bet;
           AduioManager.audioMoney.play();
           dispatch(AddCoins(coins));
           dispatch(AddScore(coins));
